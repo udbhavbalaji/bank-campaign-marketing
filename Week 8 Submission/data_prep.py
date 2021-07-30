@@ -23,3 +23,6 @@ def clean_data(filename, target_filename, sep, na):
 
     # Writing the dataframe into a new cleaned up data_set that we can use
     df.to_csv(target_filename, index=False)
+
+if __name__ == "__main__":
+    clean_data('bank_additional_full.csv','bank_data.csv',';','unknown')
