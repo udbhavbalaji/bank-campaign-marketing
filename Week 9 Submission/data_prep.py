@@ -47,8 +47,16 @@ def clean_data(filename, target_filename, sep, na):
     ## Dropping duplicates
     df.drop_duplicates(keep='first', inplace=True)
 
+    ## Dealing with outliers in the AGE column
+    q1 = df['age'].quantile(0.25)
+    q3 = df['age'].quantile(0.75)
+    iqr = q3 - q1
+    lower_outlier = df["age"]< (q1-1.5*iqr)
+    upper_outlier = df["age"] > (q3+1.5*iqr)
+    df_final = df[~(lower_outlier | upper_outlier)]
+
     # Writing the dataframe into a new cleaned up data_set that we can use
-    df.to_csv(target_filename, index=False)
+    df_final.to_csv(target_filename, index=False)
 
 if __name__ == "__main__":
     clean_data('Data/bank_additional_full.csv','Data/bank_data.csv',';','unknown')
